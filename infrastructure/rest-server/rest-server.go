@@ -11,23 +11,20 @@ type GinServer struct {
 	server *http.Server
 }
 
-func (s *GinServer) RegisterPublicRoute(method, path string, handler http.HandlerFunc) {
-	ginHandler := func(c *gin.Context) {
-		handler(c.Writer, c.Request)
-	}
+func (s *GinServer) RegisterPublicRoute(method, path string, handler gin.HandlerFunc) {
 	switch method {
 	case http.MethodGet:
-		s.router.GET(path, ginHandler)
+		s.router.GET(path, handler)
 	case http.MethodPost:
-		s.router.POST(path, ginHandler)
+		s.router.POST(path, handler)
 	case http.MethodPut:
-		s.router.PUT(path, ginHandler)
+		s.router.PUT(path, handler)
 	case http.MethodPatch:
-		s.router.PATCH(path, ginHandler)
+		s.router.PATCH(path, handler)
 	case http.MethodDelete:
-		s.router.DELETE(path, ginHandler)
+		s.router.DELETE(path, handler)
 	default:
-		s.router.Any(path, ginHandler)
+		s.router.Any(path, handler)
 	}
 }
 
